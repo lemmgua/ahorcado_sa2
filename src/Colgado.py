@@ -7,7 +7,7 @@ play_again="y"
 while play_again=="y":
     user_lifes = 3
 
-    sample_words = ("Manzana", "Platano", "Pera", "Naranja", "Perejil", "Hamburguesa")
+    sample_words = ("Manzana", "Platano", "Pera", "Naranja", "Perejil", "Hamburguesa", "Pizza", "Sushi", "Nachos", "Espaguetis")
 
     data_word = random.choice(sample_words)
 
@@ -45,4 +45,4 @@ while play_again=="y":
             time.sleep(1)
             print("Enhorabuena, has ganado.")
             break
-    play_again=input("¿Quieres volver a jugar? y/n\n").lower()
+    play_again=input("¿Quieres volver a jugar? y/n\n").lower()    
