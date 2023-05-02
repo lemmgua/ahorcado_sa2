@@ -18,6 +18,10 @@ while True:
     
     user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
     
+    if user_guess.lower()==data_word.lower():
+        print("Enhorabuena, has ganado.")
+        break
+
     for i in range(len(data_word)):
         if data_word[i] == user_guess:
             game_word = game_word[:i] + user_guess + game_word[i+1:]
@@ -38,4 +42,3 @@ while True:
         time.sleep(1)
         print("Enhorabuena, has ganado.")
         break
-    
