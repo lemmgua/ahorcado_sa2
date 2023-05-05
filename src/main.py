@@ -3,7 +3,7 @@ from wonderwords import RandomWord
 from googletrans import Translator
 
 @eel.expose
-def ConseguirPalabraAleatoria() :
+def ConseguirPalabraAleatoria() -> str:
     trans = Translator()
     word = RandomWord()
     rword = word.word()
