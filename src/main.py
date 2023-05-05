@@ -7,6 +7,7 @@ def ConseguirPalabraAleatoria() :
     trans = Translator()
     word = RandomWord()
     rword = word.word()
+    del trans
+    del word
     return trans.translate(rword, dest="es")
 
-print(ConseguirPalabraAleatoria().text)
