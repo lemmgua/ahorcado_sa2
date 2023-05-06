@@ -12,4 +12,4 @@ def ConseguirPalabraAleatoria() -> str:
     del word
     return trans.translate(rword, dest="es").text
 
-eel.start("index.html")
+eel.start("index.html", size=(800, 600))
