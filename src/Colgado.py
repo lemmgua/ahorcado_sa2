@@ -7,20 +7,26 @@ play_again="y"
 while play_again=="y":
     user_lifes = 3
 
-    sample_words = ("Manzana", "Platano", "Pera", "Naranja", "Perejil", "Hamburguesa", "Pizza", "Sushi", "Nachos", "Espaguetis")
+    sample_words = []
+
+    with open("src/words.txt", "r") as file:
+        for i in file:
+            sample_words.append(i)
+
 
     data_word = random.choice(sample_words)
 
     game_word = ""
 
-    for i in range(len(data_word)):
+    for i in range(len(data_word)-1):
         game_word += "_"
 
     while True:
-        print("\033c", end="")
+        print(data_word.lower())
         
         user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
         
+        print(data_word.lower())
         if user_guess.lower()==data_word.lower():
             print("Enhorabuena, has ganado.")
             break
