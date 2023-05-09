@@ -25,8 +25,7 @@ while play_again=="y":
         print(data_word.lower())
         
         user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
-        
-        print(data_word.lower())
+
         if user_guess.lower()==data_word.lower():
             print("Enhorabuena, has ganado.")
             break
