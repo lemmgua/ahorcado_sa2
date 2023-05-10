@@ -12,4 +12,8 @@ def ConseguirPalabraAleatoria() -> str:
     del word
     return trans.translate(rword, dest="es").text
 
+@eel.expose
+def AnalizarLetra(key: str) -> None:
+    pass
+
 eel.start("index.html", size=(800, 600))
