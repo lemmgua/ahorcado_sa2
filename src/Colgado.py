@@ -15,20 +15,24 @@ while play_again=="y":
 
 
     data_word = random.choice(sample_words)
+    
+    data_word=data_word[:len(data_word)-1]
 
     game_word = ""
 
-    for i in range(len(data_word)-1):
+    for i in range(len(data_word)):
         game_word += "_"
 
-    while True:
-        print(data_word.lower())
+    play=True
+
+    while play==True:
         
+        print(data_word)
         user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
 
         if user_guess.lower()==data_word.lower():
             print("Enhorabuena, has ganado.")
-            break
+            play=False
 
         for i in range(len(data_word)):
             if data_word[i] == user_guess:
@@ -43,11 +47,11 @@ while play_again=="y":
         
         if user_lifes <= 0:
             print(f"Has perdido :(\nLa palabra era {data_word}\n")
-            break
+            play=False
 
         if game_word.count("_") == False:
             print(game_word)
             time.sleep(1)
             print("Enhorabuena, has ganado.")
-            break
+            play=False
     play_again=input("¿Quieres volver a jugar? y/n\n").lower()    
