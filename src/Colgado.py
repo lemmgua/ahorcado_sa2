@@ -6,6 +6,7 @@ import random, time
 play_again="y"
 
 while play_again=="y":
+    name=input("Dime tu nombre:\n")
     user_lifes = 3
     points=0
     streak=0
@@ -84,4 +85,8 @@ while play_again=="y":
             print("Enhorabuena, has ganado.")
             print(f"Tú puntuación es de {points}")
             play=False
+    
+    with open("src/players.txt", "a") as file:
+        file.write(f"\n{name}: {points}")
+    
     play_again=input("¿Quieres volver a jugar? y/n\n").lower()    
