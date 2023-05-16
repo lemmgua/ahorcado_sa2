@@ -1,4 +1,4 @@
-import firebase_admin
+import firebase_admin, os
 from firebase_admin import firestore
 from firebase_admin import credentials
 
@@ -16,7 +16,7 @@ def InsertarPuntuacion(nombre: str, puntos: int, mayorRacha: int) -> any:
     return db.collection(u"registros-jugadores").add(data)
 
 def LeerDatos(nombre: str) -> list[dict]:
-    cred = credentials.Certificate(r"C:\Users\aleja\OneDrive\Documentos\.Code\hanged-man-sa2-firebase-adminsdk-b0ie6-95cbc7f745.json")
+    cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS_SA2"])
     app = firebase_admin.initialize_app(cred)
     db = firestore.client()
 
