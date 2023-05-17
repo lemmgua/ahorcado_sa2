@@ -1,7 +1,6 @@
 import random, time, database
 
-startText = '''
-    ¡Bienvenido! ¿Qué desea hacer?
+startText = '''¡Bienvenido! ¿Qué desea hacer?
     [1] - Jugar una nueva partida
     [2] - Ver puntuaciones
     [3] - Salir del juego
@@ -69,14 +68,14 @@ while wantsToExit == False:
                             
                         game_word = game_word[:i] + user_guess + game_word[i+1:]
                             
-                    elif data_word[0].lower() == user_guess.lower():
+                    """ elif data_word[0].lower() == user_guess.lower():
                         if streak>2 and user_guess not in game_word and user_guess in data_word:
                             points=points+15
                             streak=streak+1                 
                         elif user_guess not in game_word and user_guess in data_word:
                             points=points+10
                             streak=streak+1 
-                        game_word = user_guess + game_word[1:]
+                        game_word = user_guess + game_word[1:] """
 
 
                 if data_word.lower().count(user_guess.lower()) == False:
@@ -107,10 +106,9 @@ while wantsToExit == False:
             play_again=input("¿Quieres volver a jugar? y/n\n").lower()
     #leer puntuaciones
     if playerDecision == 2:
-        textoPregunta = '''
-        ¿Qué deseas hacer?
-        [1] - Ver puntuación de jugador
-        [2] - Ver puntuación más alta
+        textoPregunta = '''¿Qué deseas hacer?
+    [1] - Ver puntuación de jugador
+    [2] - Ver puntuación más alta
         '''
         playerDecision = input(textoPregunta)
         while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 2:
