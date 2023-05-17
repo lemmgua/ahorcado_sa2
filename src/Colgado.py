@@ -1,9 +1,9 @@
 import random, time, database
 
 startText = '''¡Bienvenido! ¿Qué desea hacer?
-    [1] - Jugar una nueva partida
-    [2] - Ver puntuaciones
-    [3] - Salir del juego
+[1] - Jugar una nueva partida
+[2] - Ver puntuaciones
+[3] - Salir del juego
     '''
 
 #hang man
@@ -119,3 +119,8 @@ while wantsToExit == False:
             puntuaciones = database.LeerDatos(playerSearch)
             for i in puntuaciones:
                 print(i["nombre"] + " - " + str(i["score"]))
+    #salir del juego
+    if playerDecision == 3:
+        wantsToExit = True
+time.sleep(0.5)
+print("Juego finalizado")
