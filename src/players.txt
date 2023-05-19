@@ -1,2 +1,5 @@
 Leo: 80Leo: 100Patata: 120
 hols: 140
+daw: 0
+carlos: 105
+carlos: 75

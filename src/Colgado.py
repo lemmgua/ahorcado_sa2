@@ -1,4 +1,5 @@
 import random, time, database
+from rich import print
 
 startText = '''¡Bienvenido! ¿Qué desea hacer?
 [1] - Jugar una nueva partida
@@ -21,7 +22,7 @@ while wantsToExit == False:
     if playerDecision == 1:
         while play_again=="y":
             name=input("Dime tu nombre:\n")
-            user_lifes = 3
+            user_lifes = 5
             points=0
             streak=0
             sample_words = []
@@ -50,13 +51,13 @@ while wantsToExit == False:
                 if user_guess.lower()==data_word.lower():
                     points=points+game_word.count("_")*20
 
-                    print("Enhorabuena, has ganado.")
-                    print(f"Tú puntuación es de {points}")
+                    #print("Enhorabuena, has ganado.")
+                    #print(f"Tú puntuación es de {points}")
                     play=False
 
                 for i in range(len(data_word)):
-                    print(f"racha {streak}")
-                    print(f"puntos {points}")
+                    #print(f"racha {streak}")
+                    #print(f"puntos {points}")
                     if data_word[i] == user_guess:
                         
                         if streak>2 and user_guess not in game_word and user_guess in data_word:
@@ -81,7 +82,7 @@ while wantsToExit == False:
                 if data_word.lower().count(user_guess.lower()) == False:
                     user_lifes -= 1
                     print(f"Incorrecto. La palabra no contiene {user_guess}. Te quedan {user_lifes} vida/s.\n")
-                    points=points-20
+                    points=points-10
                     streak=0
                     time.sleep(3)
                 
@@ -102,6 +103,15 @@ while wantsToExit == False:
             
             with open("src/players.txt", "a") as file:
                 file.write(f"\n{name}: {points}")
+
+            print("[bold]¿Desea guardar su partida?[/bold]\n[green][1] - Guardar[/green]\n[red][2] - No guardar[/red]\n")
+            response = input()
+            while response.isnumeric() == False or int(response) < 1 or int(response) > 2:
+                print("[underline bold red]La opción introducida no es correcta[/underline bold red]\n[bold]¿Desea guardar su partida?[/bold]\n[green][1] - Guardar[/green]\n[red][2] - No guardar[/red]\n")
+                response = input()
+            response = int(response)
+            if response == 1:
+                database.InsertarPuntuacion(name, points, streak)
             
             play_again=input("¿Quieres volver a jugar? y/n\n").lower()
     #leer puntuaciones
