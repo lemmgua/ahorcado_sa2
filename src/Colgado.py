@@ -1,4 +1,4 @@
-import random, time, database
+import random, time, database, helper
 from rich import print
 
 startText = '''¡Bienvenido! ¿Qué desea hacer?
@@ -14,6 +14,7 @@ wantsToExit = False
 play_again="y"
 
 while wantsToExit == False:
+    helper.Clear()
     playerDecision = input(startText)
     while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
         playerDecision = input("No se ha introducido una opción correcta.\n"+startText)
@@ -27,12 +28,13 @@ while wantsToExit == False:
             streak=0
             sample_words = []
 
-            with open("src/words.txt", "r") as file:
-                for i in file:
-                    sample_words.append(i)
+            #with open("src/words.txt", "r") as file:
+            #    for i in file:
+            #        sample_words.append(i)
 
 
-            data_word = random.choice(sample_words)
+            #data_word = random.choice(sample_words)
+            data_word = helper.ConseguirPalabraAleatoria()
             
             data_word=data_word[:len(data_word)-1]
 
