@@ -5,7 +5,7 @@ startText = '''¡Bienvenido! ¿Qué desea hacer?
 [1] - Jugar una nueva partida
 [2] - Ver puntuaciones
 [3] - Salir del juego
-    '''
+'''
 
 #hang man
 
@@ -117,9 +117,9 @@ while wantsToExit == False:
     #leer puntuaciones
     if playerDecision == 2:
         textoPregunta = '''¿Qué deseas hacer?
-    [1] - Ver puntuación de jugador
-    [2] - Ver puntuación más alta
-        '''
+[1] - Ver puntuación de jugador
+[2] - Ver puntuación más alta
+'''
         playerDecision = input(textoPregunta)
         while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 2:
             playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
