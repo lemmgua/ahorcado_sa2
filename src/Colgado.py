@@ -118,9 +118,9 @@ while wantsToExit == False:
             play_again=input("¿Quieres volver a jugar? y/n\n").lower()
     #leer puntuaciones
     if playerDecision == 2:
-        textoPregunta = '''¿Qué deseas hacer?
-[1] - Ver puntuación de jugador
-[2] - Ver puntuación más alta
+        textoPregunta = '''¿Qué puntuación deseas ver?
+[1] - De jugador
+[2] - La más alta
 '''
         playerDecision = input(textoPregunta)
         while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 2:
@@ -131,6 +131,8 @@ while wantsToExit == False:
             puntuaciones = database.LeerDatos(playerSearch)
             for i in puntuaciones:
                 print(i["nombre"] + " - " + str(i["score"]))
+            print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
+            input()
     #salir del juego
     if playerDecision == 3:
         wantsToExit = True

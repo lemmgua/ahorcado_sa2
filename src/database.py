@@ -1,9 +1,10 @@
 import firebase_admin, os
 from firebase_admin import firestore
 from firebase_admin import credentials
+from dotenv import load_dotenv
 
 def InsertarPuntuacion(nombre: str, puntos: int, mayorRacha: int) -> any:
-    cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS_SA2"])
+    cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS_SA2"))
     firebase_admin.initialize_app(cred)
     db = firestore.client()
 
@@ -16,7 +17,8 @@ def InsertarPuntuacion(nombre: str, puntos: int, mayorRacha: int) -> any:
     return db.collection(u"registros-jugadores").add(data)
 
 def LeerDatos(nombre: str) -> list[dict]:
-    cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS_SA2"])
+    load_dotenv()
+    cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS_SA2"))
     firebase_admin.initialize_app(cred)
     db = firestore.client()
 
