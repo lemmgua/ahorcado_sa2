@@ -1,7 +1,7 @@
 import random, time, database, helper
 from rich import print
 
-startText = '''¡Bienvenido! ¿Qué desea hacer?
+startText = '''[b blue]¡Bienvenido! ¿Qué desea hacer?[/b blue]
 [1] - Jugar una nueva partida
 [2] - Ver puntuaciones
 [3] - Salir del juego
@@ -15,7 +15,8 @@ play_again="y"
 
 while wantsToExit == False:
     helper.Clear()
-    playerDecision = input(startText)
+    print(startText)
+    playerDecision = input()
     while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
         playerDecision = input("No se ha introducido una opción correcta.\n"+startText)
     playerDecision = int(playerDecision)
@@ -27,6 +28,7 @@ while wantsToExit == False:
             points=0
             streak=0
             sample_words = []
+            letras_adivinadas = list()
 
             #with open("src/words.txt", "r") as file:
             #    for i in file:
@@ -38,20 +40,22 @@ while wantsToExit == False:
             
             data_word=data_word[:len(data_word)-1]
 
-            game_word = ""
-
-            for i in range(len(data_word)):
-                game_word += "_"
-
             play=True
 
-            while play==True:
-                
-                print(data_word)
+            while play:
+
+                game_word = ""
+
+                for letra in data_word:
+                    if letra in letras_adivinadas:
+                        game_word += letra
+                    else:
+                        game_word += "_"
+
                 user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
 
                 if user_guess.lower()==data_word.lower():
-                    points=points+game_word.count("_")*20
+                    points += game_word.count("_")*20
 
                     #print("Enhorabuena, has ganado.")
                     #print(f"Tú puntuación es de {points}")
@@ -63,8 +67,8 @@ while wantsToExit == False:
                     if data_word[i] == user_guess:
                         
                         if streak>2 and user_guess not in game_word and user_guess in data_word:
-                            points=points+15
-                            streak=streak+1                 
+                            points += 15
+                            streak += 1
                         elif user_guess not in game_word and user_guess in data_word:
                             points=points+10
                             streak=streak+1 
@@ -84,7 +88,7 @@ while wantsToExit == False:
                 if data_word.lower().count(user_guess.lower()) == False:
                     user_lifes -= 1
                     print(f"Incorrecto. La palabra no contiene {user_guess}. Te quedan {user_lifes} vida/s.\n")
-                    points=points-10
+                    points -= 10
                     streak=0
                     time.sleep(3)
                 
@@ -99,8 +103,8 @@ while wantsToExit == False:
                 if game_word.count("_") == False:
                     print(game_word)
                     time.sleep(1)
-                    print("Enhorabuena, has ganado.")
-                    print(f"Tú puntuación es de {points}")
+                    print("[b green]Enhorabuena, has ganado![/b green]")
+                    print(f"[b]Tú puntuación es de {points}![/b]")
                     play=False
             
             with open("src/players.txt", "a") as file:
@@ -118,19 +122,23 @@ while wantsToExit == False:
             play_again=input("¿Quieres volver a jugar? y/n\n").lower()
     #leer puntuaciones
     if playerDecision == 2:
-        textoPregunta = '''¿Qué puntuación deseas ver?
+        textoPregunta = '''[b blue]¿Qué puntuación deseas ver?[/b blue]
 [1] - De jugador
 [2] - La más alta
 '''
-        playerDecision = input(textoPregunta)
+        print(textoPregunta)
+        playerDecision = input()
         while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 2:
             playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
         playerDecision = int(playerDecision)
         if playerDecision == 1:
             playerSearch = input("Introduce el nombre del jugador a buscar: > ")
             puntuaciones = database.LeerDatos(playerSearch)
-            for i in puntuaciones:
-                print(i["nombre"] + " - " + str(i["score"]))
+            if puntuaciones == []:
+                print("[red b]No se ha encontrado ninguna puntuación[/red b]")
+            else:
+                for i in puntuaciones:
+                    print(i["nombre"] + " - " + str(i["score"]))
             print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
             input()
     #salir del juego

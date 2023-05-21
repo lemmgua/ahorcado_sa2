@@ -19,7 +19,10 @@ def InsertarPuntuacion(nombre: str, puntos: int, mayorRacha: int) -> any:
 def LeerDatos(nombre: str) -> list[dict]:
     load_dotenv()
     cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS_SA2"))
-    firebase_admin.initialize_app(cred)
+    try: #Error de app duplicada
+        firebase_admin.initialize_app(cred)
+    except ValueError:
+        pass
     db = firestore.client()
 
     doc = db.collection(u"registros-jugadores").where(u"nombre", u"==", nombre)
