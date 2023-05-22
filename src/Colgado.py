@@ -71,7 +71,7 @@ while wantsToExit == False:
                             streak += 1
                         elif user_guess not in game_word and user_guess in data_word:
                             points=points+10
-                            streak=streak+1 
+                            streak=streak+1
                             
                         game_word = game_word[:i] + user_guess + game_word[i+1:]
                             
