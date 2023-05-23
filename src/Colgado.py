@@ -163,8 +163,22 @@ while wantsToExit == False:
         while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
             playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
         playerDecision = int(playerDecision)
-        if playerDecision == 1:
-            pass
+
+        if playerDecision == 1: #Cambiar esquema de colores
+            textoPregunta = f'''[b {SECONDARY_COLOR}] ¿Qué esquema desea? [/b {SECONDARY_COLOR}]
+[{THIRD_COLOR}][1] - Predeterminado
+[2] - Navidad
+[3] - Neon
+[4] - Oro
+[5] - Frío'''
+            print(Panel(textoPregunta, title="Esquema de color", title_align="left", style=PRIMARY_COLOR+" b"))
+            playerDecision = input()
+            while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 5:
+                playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
+            playerDecision = int(playerDecision)
+
+            #Lógica de cambiar esquema de colores
+
         elif playerDecision == 3: #Volver al menú
             continue
 
