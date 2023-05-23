@@ -165,6 +165,7 @@ while wantsToExit == False:
         playerDecision = int(playerDecision)
 
         if playerDecision == 1: #Cambiar esquema de colores
+            helper.Clear()
             textoPregunta = f'''[b {SECONDARY_COLOR}] ¿Qué esquema desea? [/b {SECONDARY_COLOR}]
 [{THIRD_COLOR}][1] - Predeterminado
 [2] - Navidad
