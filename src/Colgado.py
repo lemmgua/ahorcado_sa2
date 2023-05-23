@@ -85,8 +85,8 @@ while wantsToExit == False:
                             streak=streak+1 
                         game_word = user_guess + game_word[1:] """
 
-
-                if data_word.lower().count(user_guess.lower()) == False:
+                #si la letra no está en la palabra
+                if user_guess.lower() not in data_word.lower():
                     user_lifes -= 1
                     print(f"Incorrecto. La palabra no contiene {user_guess}. Te quedan {user_lifes} vida/s.\n")
                     points -= 10
@@ -99,7 +99,8 @@ while wantsToExit == False:
                     points=0
                     print(f"Tú puntuación es de {points}")
                     play=False
-                    
+                
+                #si ya no hay más letras por adivinar
                 if game_word.count("_") == False:
                     print(game_word)
                     time.sleep(1)
