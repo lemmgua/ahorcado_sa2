@@ -28,15 +28,8 @@ while wantsToExit == False:
             user_lifes = 5
             points=0
             streak=0
-            sample_words = []
             letras_adivinadas = list()
 
-            #with open("src/words.txt", "r") as file:
-            #    for i in file:
-            #        sample_words.append(i)
-
-
-            #data_word = random.choice(sample_words)
             data_word = helper.ConseguirPalabraAleatoria()
 
             play=True
@@ -64,6 +57,10 @@ while wantsToExit == False:
                     #print("Enhorabuena, has ganado.")
                     #print(f"Tú puntuación es de {points}")
                     play=False
+                
+                #si el jugador adivina una letra
+                elif user_guess in data_word:
+                    letras_adivinadas.append(user_guess)
 
                 #si la letra no está en la palabra
                 elif user_guess.lower() not in data_word.lower():
