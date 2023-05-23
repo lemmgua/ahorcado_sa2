@@ -54,6 +54,7 @@ while wantsToExit == False:
 
                 user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
 
+                #adivina palabra directamente
                 if user_guess.lower()==data_word.lower():
                     points += game_word.count("_")*20
 
@@ -92,8 +93,7 @@ while wantsToExit == False:
                     streak=0
                     time.sleep(3)
                 
-                
-                
+                #Si el jugador se queda sin vidas
                 if user_lifes <= 0:
                     print(f"Has perdido :(\nLa palabra era {data_word}\n")
                     points=0
