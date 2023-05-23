@@ -12,6 +12,7 @@ startText = '''[b blue]¡Bienvenido! ¿Qué desea hacer?[/b blue]
 #main menu
 wantsToExit = False
 play_again="y"
+cheat_win = "001"
 
 while wantsToExit == False:
     helper.Clear()
@@ -37,8 +38,6 @@ while wantsToExit == False:
 
             #data_word = random.choice(sample_words)
             data_word = helper.ConseguirPalabraAleatoria()
-            
-            data_word=data_word[:len(data_word)-1]
 
             play=True
 
@@ -54,39 +53,20 @@ while wantsToExit == False:
 
                 user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
 
+                #truco para ganar directamente
+                if user_guess == cheat_win:
+                    game_word = data_word
+
                 #adivina palabra directamente
-                if user_guess.lower()==data_word.lower():
+                elif user_guess.lower()==data_word.lower():
                     points += game_word.count("_")*20
 
                     #print("Enhorabuena, has ganado.")
                     #print(f"Tú puntuación es de {points}")
                     play=False
 
-                for i in range(len(data_word)):
-                    #print(f"racha {streak}")
-                    #print(f"puntos {points}")
-                    if data_word[i] == user_guess:
-                        
-                        if streak>2 and user_guess not in game_word and user_guess in data_word:
-                            points += 15
-                            streak += 1
-                        elif user_guess not in game_word and user_guess in data_word:
-                            points=points+10
-                            streak=streak+1
-                            
-                        game_word = game_word[:i] + user_guess + game_word[i+1:]
-                            
-                    """ elif data_word[0].lower() == user_guess.lower():
-                        if streak>2 and user_guess not in game_word and user_guess in data_word:
-                            points=points+15
-                            streak=streak+1                 
-                        elif user_guess not in game_word and user_guess in data_word:
-                            points=points+10
-                            streak=streak+1 
-                        game_word = user_guess + game_word[1:] """
-
                 #si la letra no está en la palabra
-                if user_guess.lower() not in data_word.lower():
+                elif user_guess.lower() not in data_word.lower():
                     user_lifes -= 1
                     print(f"Incorrecto. La palabra no contiene {user_guess}. Te quedan {user_lifes} vida/s.\n")
                     points -= 10
@@ -107,9 +87,6 @@ while wantsToExit == False:
                     print("[b green]Enhorabuena, has ganado![/b green]")
                     print(f"[b]Tú puntuación es de {points}![/b]")
                     play=False
-            
-            with open("src/players.txt", "a") as file:
-                file.write(f"\n{name}: {points}")
 
             print("[bold]¿Desea guardar su partida?[/bold]\n[green][1] - Guardar[/green]\n[red][2] - No guardar[/red]\n")
             response = input()
@@ -119,8 +96,15 @@ while wantsToExit == False:
             response = int(response)
             if response == 1:
                 database.InsertarPuntuacion(name, points, streak)
-            
-            play_again=input("¿Quieres volver a jugar? y/n\n").lower()
+            play_again_text = "¿Quieres volver a jugar?\n[green][Y] - Sí\n[red][N] - No[/red]"
+            print(play_again_text)
+            play_again = input().lower()
+            while play_again != "y" and play_again != "n":
+                helper.Clear()
+                print("Esa opción no es correcta\n"+play_again_text)
+                play_again = input().lower()
+            if play_again == "n":
+                wantsToExit = True
     #leer puntuaciones
     if playerDecision == 2:
         textoPregunta = '''[b blue]¿Qué puntuación deseas ver?[/b blue]
