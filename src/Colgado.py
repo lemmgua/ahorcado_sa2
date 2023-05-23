@@ -1,22 +1,30 @@
 import random, time, database, helper
 from rich import print
+from rich.align import Align
+from rich.panel import Panel
+from sys import maxsize
 
-startText = '''[b blue]¡Bienvenido! ¿Qué desea hacer?[/b blue]
-[1] - Jugar una nueva partida
+wantsToExit = False
+play_again="y"
+cheat_win = "001"
+PRIMARY_COLOR = "#E57C23"
+SECONDARY_COLOR = "#E8AA42"
+THIRD_COLOR = "#068DA9"
+
+startText = f'''[b {SECONDARY_COLOR}]¡Bienvenido! ¿Qué desea hacer?[/b {SECONDARY_COLOR}]
+[{THIRD_COLOR}][1] - Jugar una nueva partida
 [2] - Ver puntuaciones
-[3] - Salir del juego
+[3] - Salir del juego[/{THIRD_COLOR}]
 '''
 
 #hang man
 
 #main menu
-wantsToExit = False
-play_again="y"
-cheat_win = "001"
+
 
 while wantsToExit == False:
     helper.Clear()
-    print(startText)
+    print(Panel(startText, title="Ahorcado", title_align="left", style=PRIMARY_COLOR))
     playerDecision = input()
     while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
         playerDecision = input("No se ha introducido una opción correcta.\n"+startText)
@@ -24,17 +32,27 @@ while wantsToExit == False:
 
     if playerDecision == 1:
         while play_again=="y":
-            name=input("Dime tu nombre:\n")
+            print("[b blue]¿Cómo te llamas, jugador/a?[/b blue]: ", end="")
+            name = input()
             user_lifes = 5
-            points=0
-            streak=0
+            points = 0
+            racha = 0
+            mayor_racha = -maxsize #Numero infinitamente negativo
             letras_adivinadas = list()
+            letras_utilizadas = list()
 
             data_word = helper.ConseguirPalabraAleatoria()
 
             play=True
 
             while play:
+                helper.Clear()
+                def ComprobarRacha() -> None:
+                    mayor_racha = racha if racha > mayor_racha else None
+                
+                def PulsaEnterParaContinuar() -> None:
+                    print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
+                    input()
 
                 game_word = ""
 
@@ -44,7 +62,13 @@ while wantsToExit == False:
                     else:
                         game_word += "_"
 
-                user_guess = input(f"Intenta adviniar una letra:\n{game_word}\n")
+                """ print("[b green]Intenta adviniar una letra:[/b green]")
+                print(f"[b white]LETRAS YA UTILIZADAS: {', '.join(letras_utilizadas)}[/b white]") if len(letras_utilizadas) > 0 else None
+                print(game_word)
+                print(Padding(str(user_lifes))) """
+                print(Panel(("[b green]Intenta adviniar una letra:[/b green]\n"+f"[b white]LETRAS YA UTILIZADAS: {', '.join(letras_utilizadas)}[/b white]\n" + game_word), title="Ahorcado", title_align="left", style=PRIMARY_COLOR))
+                user_guess = input("> ")
+                letras_utilizadas.append(user_guess)
 
                 #truco para ganar directamente
                 if user_guess == cheat_win:
@@ -53,6 +77,8 @@ while wantsToExit == False:
                 #adivina palabra directamente
                 elif user_guess.lower()==data_word.lower():
                     points += game_word.count("_")*20
+                    racha += 1
+                    ComprobarRacha()
 
                     #print("Enhorabuena, has ganado.")
                     #print(f"Tú puntuación es de {points}")
@@ -65,10 +91,10 @@ while wantsToExit == False:
                 #si la letra no está en la palabra
                 elif user_guess.lower() not in data_word.lower():
                     user_lifes -= 1
-                    print(f"Incorrecto. La palabra no contiene {user_guess}. Te quedan {user_lifes} vida/s.\n")
+                    print(f"[b red]Incorrecto. La palabra no contiene {user_guess}. Te quedan {user_lifes} vida/s.[/b red]\n")
                     points -= 10
-                    streak=0
-                    time.sleep(3)
+                    racha=0
+                    PulsaEnterParaContinuar()
                 
                 #Si el jugador se queda sin vidas
                 if user_lifes <= 0:
@@ -92,7 +118,7 @@ while wantsToExit == False:
                 response = input()
             response = int(response)
             if response == 1:
-                database.InsertarPuntuacion(name, points, streak)
+                database.InsertarPuntuacion(name, points, racha)
             play_again_text = "¿Quieres volver a jugar?\n[green][Y] - Sí\n[red][N] - No[/red]"
             print(play_again_text)
             play_again = input().lower()
@@ -121,8 +147,7 @@ while wantsToExit == False:
             else:
                 for i in puntuaciones:
                     print(i["nombre"] + " - " + str(i["score"]))
-            print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
-            input()
+            PulsaEnterParaContinuar()
     #salir del juego
     if playerDecision == 3:
         wantsToExit = True
