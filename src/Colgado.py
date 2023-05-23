@@ -4,17 +4,20 @@ from rich.align import Align
 from rich.panel import Panel
 from sys import maxsize
 
+ajustes = helper.CargarAjustes()
+esquema_colores = helper.ConseguirEsquemaDeColor("cold")
+PRIMARY_COLOR = esquema_colores["primary"]
+SECONDARY_COLOR = esquema_colores["secondary"]
+THIRD_COLOR = esquema_colores["third"]
 wantsToExit = False
 play_again="y"
 cheat_win = "001"
-PRIMARY_COLOR = "#E57C23"
-SECONDARY_COLOR = "#E8AA42"
-THIRD_COLOR = "#068DA9"
 
 startText = f'''[b {SECONDARY_COLOR}]¡Bienvenido! ¿Qué desea hacer?[/b {SECONDARY_COLOR}]
 [{THIRD_COLOR}][1] - Jugar una nueva partida
 [2] - Ver puntuaciones
-[3] - Salir del juego[/{THIRD_COLOR}]
+[3] - Ajustes de juego
+[4] - Salir del juego[/{THIRD_COLOR}]
 '''
 
 #hang man
@@ -24,9 +27,9 @@ startText = f'''[b {SECONDARY_COLOR}]¡Bienvenido! ¿Qué desea hacer?[/b {SECON
 
 while wantsToExit == False:
     helper.Clear()
-    print(Panel(startText, title="Ahorcado", title_align="left", style=PRIMARY_COLOR))
+    print(Panel(startText, title="Ahorcado", title_align="left", style=PRIMARY_COLOR+" b"))
     playerDecision = input()
-    while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
+    while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 4:
         playerDecision = input("No se ha introducido una opción correcta.\n"+startText)
     playerDecision = int(playerDecision)
 
@@ -148,8 +151,25 @@ while wantsToExit == False:
                 for i in puntuaciones:
                     print(i["nombre"] + " - " + str(i["score"]))
             PulsaEnterParaContinuar()
+    elif playerDecision == 3:
+        helper.Clear()
+        textoPregunta = f'''[b {SECONDARY_COLOR}] ¿Qué desea hacer? [/b {SECONDARY_COLOR}]
+[{THIRD_COLOR}][1] - Cambiar esquema de colores
+[2] - Cambiar nombre
+[3] - Volver al menú principal
+'''
+        print(Panel(textoPregunta, title="Ajustes de juego", title_align="left", style=PRIMARY_COLOR))
+        playerDecision = input()
+        while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
+            playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
+        playerDecision = int(playerDecision)
+        if playerDecision == 1:
+            pass
+        elif playerDecision == 3: #Volver al menú
+            continue
+
     #salir del juego
-    if playerDecision == 3:
+    elif playerDecision == 4:
         wantsToExit = True
 time.sleep(0.5)
 print("Juego finalizado")
