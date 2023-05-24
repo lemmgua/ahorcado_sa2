@@ -5,7 +5,8 @@ from rich.panel import Panel
 from sys import maxsize
 
 ajustes = helper.CargarAjustes()
-esquema_colores = helper.ConseguirEsquemaDeColor("cold")
+esquema_colores = helper.ConseguirEsquemaDeColor(ajustes["color-scheme"])
+
 PRIMARY_COLOR = esquema_colores["primary"]
 SECONDARY_COLOR = esquema_colores["secondary"]
 THIRD_COLOR = esquema_colores["third"]
@@ -179,6 +180,9 @@ while wantsToExit == False:
             playerDecision = int(playerDecision)
 
             #Lógica de cambiar esquema de colores
+            color_scheme = 1
+            if playerDecision == 2:
+                color_scheme = "xmas"
 
         elif playerDecision == 3: #Volver al menú
             continue
@@ -187,4 +191,5 @@ while wantsToExit == False:
     elif playerDecision == 4:
         wantsToExit = True
 time.sleep(0.5)
-print("Juego finalizado")
+helper.Clear()
+print("[b red]Juego finalizado[/b red]")
