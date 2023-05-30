@@ -52,7 +52,7 @@ while wantsToExit == False:
             while play:
                 helper.Clear()
                 def ComprobarRacha() -> None:
-                    mayor_racha = racha if racha > mayor_racha else None
+                    mayor_racha = racha if racha > mayor_racha else mayor_racha
                 
                 def PulsaEnterParaContinuar() -> None:
                     print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
