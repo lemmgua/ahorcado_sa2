@@ -4,6 +4,13 @@ from rich.align import Align
 from rich.panel import Panel
 from sys import maxsize
 
+def ComprobarRacha() -> None:
+                    mayor_racha = racha if racha > mayor_racha else mayor_racha
+                
+def PulsaEnterParaContinuar() -> None:
+    print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
+    input()
+
 ajustes = helper.CargarAjustes()
 esquema_colores = helper.ConseguirEsquemaDeColor(ajustes["color-scheme"])
 
@@ -51,12 +58,6 @@ while wantsToExit == False:
 
             while play:
                 helper.Clear()
-                def ComprobarRacha() -> None:
-                    mayor_racha = racha if racha > mayor_racha else mayor_racha
-                
-                def PulsaEnterParaContinuar() -> None:
-                    print("[u b i]Pulsa INTRO para continuar[/u b i]", end="")
-                    input()
 
                 game_word = ""
 
