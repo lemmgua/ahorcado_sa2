@@ -1,6 +1,7 @@
 import os, json
 from wonderwords import RandomWord
 from googletrans import Translator
+from rich import print
 
 def ConseguirPalabraAleatoria() -> str:
     trans = Translator()
@@ -24,11 +25,16 @@ def CargarAjustes() -> dict:
     except IOError: #Si el archivo no existe, crearlo
         ajustes = {
             "color-scheme": "default",
-            "player-name": "XYZ"
+            "player-name": "XYZ",
+            "difficulty": "normal"
         }
         with open((expanduser("~/Documents")+"\\ahorcado_sa2_settings.json"), "w+") as file:
             json.dump(ajustes, file, indent=4)
         return ajustes
+
+def GuardarAjustes(nuevos_ajustes: dict) -> None:
+    with open((expanduser("~/Documents")+"\\ahorcado_sa2_settings.json"), "w") as file:
+        json.dump(nuevos_ajustes, file, indent=4)
 
 def ConseguirEsquemaDeColor(color_scheme: str) -> dict:
     primary_color, secondary_color, third_color = "", "", ""
@@ -58,3 +64,7 @@ def ConseguirEsquemaDeColor(color_scheme: str) -> dict:
         "secondary": secondary_color,
         "third": third_color
     }
+
+def PulsaEnterParaContinuar() -> None:
+    print("[u b i white]Pulsa INTRO para continuar[/u b i white]", end="")
+    input()
