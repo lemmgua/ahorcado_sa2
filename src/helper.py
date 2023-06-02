@@ -1,25 +1,24 @@
-import os, json
-from wonderwords import RandomWord
+from os import system, getcwd, name
+from os.path import expanduser
+from json import load, dump
+from random import choice
 from googletrans import Translator
 from rich import print
 
 def ConseguirPalabraAleatoria() -> str:
     trans = Translator()
-    word = RandomWord()
-    rword = word.word()
-    del word
-    return trans.translate(rword, dest="es").text
+    with open(getcwd()+"/assets/nounlist.txt", "r") as file:
+        rword = choice(file.readlines())
+        return trans.translate(rword, dest="es").text
 
 def Clear() -> None:
-    os.system('cls' if os.name=='nt' else 'clear')
-
-from os.path import expanduser
+    system('cls' if name=='nt' else 'clear')
 
 def CargarAjustes() -> dict:
     #Cargar archivo de ajustes JSON
     try:
         file = open(expanduser("~/Documents")+"\\ahorcado_sa2_settings.json", "r")
-        data = json.load(file)
+        data = load(file)
         file.close()
         return data
     except IOError: #Si el archivo no existe, crearlo
@@ -29,12 +28,12 @@ def CargarAjustes() -> dict:
             "difficulty": "normal"
         }
         with open((expanduser("~/Documents")+"\\ahorcado_sa2_settings.json"), "w+") as file:
-            json.dump(ajustes, file, indent=4)
+            dump(ajustes, file, indent=4)
         return ajustes
 
 def GuardarAjustes(nuevos_ajustes: dict) -> None:
     with open((expanduser("~/Documents")+"\\ahorcado_sa2_settings.json"), "w") as file:
-        json.dump(nuevos_ajustes, file, indent=4)
+        dump(nuevos_ajustes, file, indent=4)
 
 def ConseguirEsquemaDeColor(color_scheme: str) -> dict:
     primary_color, secondary_color, third_color = "", "", ""
@@ -68,3 +67,6 @@ def ConseguirEsquemaDeColor(color_scheme: str) -> dict:
 def PulsaEnterParaContinuar() -> None:
     print("[u b i white]Pulsa INTRO para continuar[/u b i white]", end="")
     input()
+
+if __name__ == "__main__":
+    print(ConseguirPalabraAleatoria())

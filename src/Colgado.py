@@ -1,9 +1,12 @@
-import random, time, database, helper
+import database, helper
 from rich import print
 from rich.align import Align
 from rich.panel import Panel
 from sys import maxsize
 from unidecode import unidecode
+import ctypes
+
+ctypes.windll.kernel32.SetConsoleTitleW("Ahorcado SA2")
 
 ajustes = helper.CargarAjustes()
 esquema_colores = helper.ConseguirEsquemaDeColor(ajustes["color-scheme"])
@@ -37,9 +40,9 @@ while wantsToExit == False:
     playerDecision = int(playerDecision)
 
     if playerDecision == 1:
+        print(f"[b {PRIMARY_COLOR}]¿Cómo te llamas, jugador/a?[/b {PRIMARY_COLOR}]: ", end="")
+        name = input()
         while play_again=="y":
-            print(f"[b {PRIMARY_COLOR}]¿Cómo te llamas, jugador/a?[/b {PRIMARY_COLOR}]: ", end="")
-            name = input()
             if difficulty == "easy":
                 user_lifes = 10
             elif difficulty == "normal":
@@ -76,13 +79,13 @@ while wantsToExit == False:
                     print(f"[b]Tú puntuación es de {points}![/b]")
                     play=False
                 else:
-
-                    """ print("[b green]Intenta adviniar una letra:[/b green]")
-                    print(f"[b white]LETRAS YA UTILIZADAS: {', '.join(letras_utilizadas)}[/b white]") if len(letras_utilizadas) > 0 else None
-                    print(game_word)
-                    print(Padding(str(user_lifes))) """
-                    print(Panel((f"[b {SECONDARY_COLOR}]Intenta adviniar una letra:[/b {SECONDARY_COLOR}]\n"+f"[b white]LETRAS YA UTILIZADAS: {', '.join(letras_utilizadas)}[/b white]\n" + game_word), title="Ahorcado", title_align="left", style=PRIMARY_COLOR))
+                    if len(letras_utilizadas) > 0:
+                        letras_utilizadas_texto = f"[b white]LETRAS YA UTILIZADAS: {', '.join(letras_utilizadas)}[/b white]\n"
+                    else:
+                        letras_utilizadas_texto = ""
+                    print(Panel((f"[b {SECONDARY_COLOR}]Intenta adviniar una letra:[/b {SECONDARY_COLOR}]\n"+ letras_utilizadas_texto + game_word), title="Ahorcado", title_align="left", style=PRIMARY_COLOR))
                     user_guess = unidecode(input("> "))
+                    
                     if user_guess != "":
                         letras_utilizadas.append(user_guess)
 
@@ -92,11 +95,14 @@ while wantsToExit == False:
 
                     #adivina palabra directamente
                     elif user_guess.lower()==data_word.lower():
-                        points += game_word.count("_")*20
+                        points += len(data_word)*10
                         racha += 1
 
                         #print("Enhorabuena, has ganado.")
                         #print(f"Tú puntuación es de {points}")
+                        play=False
+                        print("[b green]Enhorabuena, has ganado![/b green]")
+                        print(f"[b]Tú puntuación es de {points}![/b]")
                         play=False
                     
                     #si el jugador adivina una letra
@@ -138,23 +144,32 @@ while wantsToExit == False:
                 wantsToExit = True
     #leer puntuaciones
     if playerDecision == 2:
-        textoPregunta = '''[b blue]¿Qué puntuación deseas ver?[/b blue]
+        helper.Clear()
+        textoPregunta = f'''[b {SECONDARY_COLOR}]¿Qué puntuación deseas ver?[/b {SECONDARY_COLOR}]
 [1] - De jugador
 [2] - La más alta
 '''
-        print(textoPregunta)
+        print(Panel(textoPregunta, title="Puntuaciones", title_align="left", style=PRIMARY_COLOR + " b"))
         playerDecision = input()
         while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 2:
-            playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
+            print(Panel("[red b u]Opción incorrecta[/b red u]"+textoPregunta, title="Puntuaciones", title_align="left", style=PRIMARY_COLOR + " b"))
+            playerDecision = input()
         playerDecision = int(playerDecision)
         if playerDecision == 1:
-            playerSearch = input("Introduce el nombre del jugador a buscar: > ")
+            helper.Clear()
+            print(f"[b {SECONDARY_COLOR}]Introduce el nombre del jugador a buscar:[/b {SECONDARY_COLOR}] > ", end="")
+            playerSearch = input()
             puntuaciones = database.LeerDatos(playerSearch)
             if puntuaciones == []:
                 print("[red b]No se ha encontrado ninguna puntuación[/red b]")
             else:
                 for i in puntuaciones:
-                    print(i["nombre"] + " - " + str(i["score"]))
+                    print(f"[blue b]{i['nombre']}[/blue b] - {str(i['score'])}")
+            helper.PulsaEnterParaContinuar()
+        elif playerDecision == 2:
+            helper.Clear()
+            data = database.PuntuacionMasAlta()
+            print(f"[b {PRIMARY_COLOR}]La putuación más alta es de [u {THIRD_COLOR}]{data['nombre']}[/{THIRD_COLOR} u] de [{THIRD_COLOR} u]{data['score']}[/{THIRD_COLOR} u] puntos![/b {PRIMARY_COLOR}]")
             helper.PulsaEnterParaContinuar()
     elif playerDecision == 3:
         helper.Clear()
@@ -164,10 +179,12 @@ while wantsToExit == False:
 [3] - Cambiar dificultad
 [4] - Volver al menú principal
 '''
-        print(Panel(textoPregunta, title="Ajustes de juego", title_align="left", style=PRIMARY_COLOR))
+        print(Panel(textoPregunta, title="Ajustes de juego", title_align="left", style=PRIMARY_COLOR + " b"))
         playerDecision = input()
-        while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 3:
-            playerDecision = input("No se ha introducido una opción correcta\n"+textoPregunta)
+        while playerDecision.isnumeric() == False or int(playerDecision) < 1 or int(playerDecision) > 4:
+            helper.Clear()
+            print(Panel("No se ha introducido una opción correcta\n"+textoPregunta, title="Ajustes de juego", title_align="left", style=PRIMARY_COLOR + " b"))
+            playerDecision = input()
         playerDecision = int(playerDecision)
 
         if playerDecision == 1: #Cambiar esquema de colores
@@ -247,3 +264,4 @@ while wantsToExit == False:
         wantsToExit = True
 helper.Clear()
 print("[b red]Juego finalizado[/b red]")
+helper.PulsaEnterParaContinuar()
