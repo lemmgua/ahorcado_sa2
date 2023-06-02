@@ -1,4 +1,5 @@
 from os import system, getcwd, name
+from pathlib import Path
 from os.path import expanduser
 from json import load, dump
 from random import choice
@@ -7,7 +8,7 @@ from rich import print
 
 def ConseguirPalabraAleatoria() -> str:
     trans = Translator()
-    with open(getcwd()+"/assets/nounlist.txt", "r") as file:
+    with open(getcwd()+"\\src\\nounlist.txt", "r") as file:
         rword = choice(file.readlines())
         return trans.translate(rword, dest="es").text
 
@@ -69,4 +70,5 @@ def PulsaEnterParaContinuar() -> None:
     input()
 
 if __name__ == "__main__":
-    print(ConseguirPalabraAleatoria())
+    print(str(Path(__file__).parent.resolve())+"\\nounlist.txt")
+    print(getcwd()+"\\src\\nounlist.txt")
